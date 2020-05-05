@@ -8,13 +8,14 @@ class BeanInfoSerializer(serializers.ModelSerializer): #passing serializers from
 
     class Meta:
         model = BeanInfo #telling which model we want
-        fields = ('id','name','description', 'owner','category','ingredients','directions', 'created_at', 'updated_at', 'is_public')
+        fields = ('id','company_name','description','owner','coffeeInfo','city_of_origin', 'harvested_in','company_size', 'created_at', 'updated_at', 'is_public')
         #wanting to pass a foreign key so we want to mention owner outside of the foreign key before Meta
 
 class CoffeeInfoSerializer(serializers.ModelSerializer):
     owner = serializers.ReadOnlyField(source='owner.username')  # owner is the instance coming from the model
     # we defined owner in the model as a foreign key, the foreign key brings the data
     beans = BeanInfoSerializer(many=True, read_only=True, required=False) # many recipes is a possibility, therefore true
+    #beans will be added to fields now that we have created it- this is the related-name in models- coffeeinfo
     class Meta:
         model = CoffeeInfo
-        fields = ('id','name','owner', 'description','recipies', 'created_at', 'updated_at')
+        fields = ('id','name','owner','description','roast_type','beans', 'created_at', 'updated_at')
